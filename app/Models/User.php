@@ -44,4 +44,25 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function commands()
+    {
+        return $this->hasMany(Commande::class);
+    }
+    public function achats()
+    {
+        return $this->hasMany(Achat::class);
+    }
+    public function products()
+    {
+        return $this->hasManyThrough(
+            Product::class,
+            Commande::class,
+            'user_id',
+            'commande_id',
+            'id',
+            'id'
+        )->select('products.id', 'products.product', 'products.description', 'products.quantity', 'products.price', 'products.quantity', 'products.tax', 'products.hors_tax', 'products.created_at');
+
+    }
 }
