@@ -12,7 +12,9 @@ class ProductsController extends Controller
 
     public function index(Request $request)
     {
-        $products = $request->user()->products()->get();
+        $keyword = $request->input('q');
+
+        $products = $request->user()->products()->search($keyword)->get();
         return $products;
     }
 

@@ -16,4 +16,15 @@ class Product extends Model
     {
         return $this->belongsTo(Commande::class);
     }
+
+    public function scopeSearch($query, $keyword)
+    {
+        if (!empty($keyword)) {
+            return $query->where(function ($query) use ($keyword) {
+                $query->where('product', 'like', "%{$keyword}%");
+            });
+        }
+
+        return $query;
+    }
 }

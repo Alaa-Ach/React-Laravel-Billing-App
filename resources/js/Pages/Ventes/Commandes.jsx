@@ -7,6 +7,8 @@ import moment from "moment";
 import DialogDelete from "@/Components/DialogDelete";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
+import { Button } from "flowbite-react";
+import SearchField from "@/Components/SearchField";
 
 const Commandes = ({ auth }) => {
     // values
@@ -15,10 +17,15 @@ const Commandes = ({ auth }) => {
 
     const [commandes, setCommandes] = React.useState([]);
     const [commandId, setCommandId] = React.useState(null);
+    const [search, setSearch] = React.useState("");
 
     const getVentes = () => {
         axios
-            .get("/api/commands")
+            .get("/api/commands", {
+                params: {
+                    q: search,
+                },
+            })
             .then((response) => {
                 setCommandes(response.data);
                 console.log("get data", response.data);
@@ -94,7 +101,10 @@ const Commandes = ({ auth }) => {
                 <h1 className="text-2xl font-bold">Ventes</h1>
                 <ModalNewCommand ref={refModalCommand} callBack={getVentes} />
             </div>
-            <div className="overflow-auto rounded-lg border border-gray-200 shadow-md m-5">
+            {/* search */}
+            <SearchField onValueChange={setSearch} onSearch={getVentes} />
+
+            <div className="overflow-auto rounded-lg border border-gray-200 shadow-md mx-5">
                 <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">
                     <thead className="bg-gray-50">
                         <tr>

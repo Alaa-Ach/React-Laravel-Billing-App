@@ -6,18 +6,22 @@ import moment from "moment";
 import DialogDelete from "@/Components/DialogDelete";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
+import SearchField from "@/Components/SearchField";
 
 const Clients = () => {
     // values
-    const refDialogDelete = useRef(null);
-    const refModalCommand = useRef(null);
+
+    const [search, setSearch] = React.useState("");
 
     const [ClientsDetails, setClientsDetails] = React.useState([]);
-    const [productId, setProductId] = React.useState(null);
 
     const getClients = () => {
         axios
-            .get("/api/clients")
+            .get("/api/clients", {
+                params: {
+                    q: search,
+                },
+            })
             .then((response) => {
                 setClientsDetails(response.data);
                 console.log("get data", response.data);
@@ -42,6 +46,8 @@ const Clients = () => {
             <div className="flex justify-between px-5 items-end mt-5">
                 <h1 className="text-2xl font-bold">Employés</h1>
             </div>
+            {/* search */}
+            <SearchField onValueChange={setSearch} onSearch={getClients} />
             <div className="overflow-auto rounded-lg border border-gray-200 shadow-md m-5">
                 {ClientsDetails && ClientsDetails.length && (
                     <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">

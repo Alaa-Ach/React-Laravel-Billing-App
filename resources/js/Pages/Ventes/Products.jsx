@@ -6,18 +6,24 @@ import moment from "moment";
 import DialogDelete from "@/Components/DialogDelete";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
+import SearchField from "@/Components/SearchField";
 
 const Products = () => {
     // values
     const refDialogDelete = useRef(null);
     const refModalCommand = useRef(null);
+    const [search, setSearch] = React.useState("");
 
     const [products, setProducts] = React.useState([]);
     const [productId, setProductId] = React.useState(null);
 
     const getVentes = () => {
         axios
-            .get("/api/products")
+            .get("/api/products", {
+                params: {
+                    q: search,
+                },
+            })
             .then((response) => {
                 setProducts(response.data);
                 console.log("get data", response.data);
@@ -60,6 +66,9 @@ const Products = () => {
             <div className="flex justify-between px-5 items-end mt-5">
                 <h1 className="text-2xl font-bold">Produits</h1>
             </div>
+
+            {/* search */}
+            <SearchField onValueChange={setSearch} onSearch={getVentes} />
             <div className="overflow-auto rounded-lg border border-gray-200 shadow-md m-5">
                 <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">
                     <thead className="bg-gray-50">

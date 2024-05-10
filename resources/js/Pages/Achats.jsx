@@ -20,7 +20,7 @@ const Achats = ({ auth }) => {
     const [commandes, setCommandes] = React.useState([]);
     const [commandId, setCommandId] = React.useState(null);
 
-    const getVentes = () => {
+    const getAchats = () => {
         axios
             .get("/api/achats")
             .then((response) => {
@@ -75,7 +75,7 @@ const Achats = ({ auth }) => {
                     "success",
                     3
                 );
-                getVentes();
+                getAchats();
                 console.log("delete command");
             })
             .catch((error) => {
@@ -85,7 +85,7 @@ const Achats = ({ auth }) => {
     };
     useEffect(() => {
         console.log("dsdsds");
-        getVentes();
+        getAchats();
     }, []);
     return (
         <AuthenticatedLayout
@@ -95,7 +95,7 @@ const Achats = ({ auth }) => {
                     <h2 className="font-semibold text-xl text-gray-800 leading-tight">
                         Achats
                     </h2>
-                    <ModalNewAchat ref={refModalCommand} />
+                    <ModalNewAchat callBack={getAchats} ref={refModalCommand} />
                 </div>
             }
         >

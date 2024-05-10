@@ -19,4 +19,15 @@ class Achat extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function scopeSearch($query, $keyword)
+    {
+        if (!empty($keyword)) {
+            return $query->where(function ($query) use ($keyword) {
+                $query->where('supplier', 'like', "%{$keyword}%");
+            });
+        }
+
+        return $query;
+    }
 }

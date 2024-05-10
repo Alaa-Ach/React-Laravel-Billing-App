@@ -12,7 +12,9 @@ class CommandsController extends Controller
 
     public function index(Request $request)
     {
-        $commands = $request->user()->commands()->get();
+        $keyword = $request->input('q');
+
+        $commands = $request->user()->commands()->search($keyword)->get();
         return $commands;
     }
 
